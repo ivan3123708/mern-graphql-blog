@@ -1,0 +1,17 @@
+{
+  "name": "react-graphql-blog",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "apollo-server-express": "^2.7.0",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "graphql": "^14.4.2",
+    "graphql-import": "^0.7.1",
+    "prisma-client-lib": "^1.34.3"
+  }
+}
