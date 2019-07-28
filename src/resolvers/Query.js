@@ -1,4 +1,7 @@
 const Query = {
+  user(parent, args, { prisma }) {
+    return prisma.user({ email: args.email });
+  },
   users(parent, args, { prisma }) {
     return prisma.users();
   },
