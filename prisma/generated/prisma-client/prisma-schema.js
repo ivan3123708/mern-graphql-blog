@@ -52,7 +52,7 @@ type PageInfo {
 type Post {
   id: ID!
   title: String!
-  published: Boolean!
+  text: String!
   author: User
 }
 
@@ -65,7 +65,7 @@ type PostConnection {
 input PostCreateInput {
   id: ID
   title: String!
-  published: Boolean
+  text: String!
   author: UserCreateOneWithoutPostsInput
 }
 
@@ -77,7 +77,7 @@ input PostCreateManyWithoutAuthorInput {
 input PostCreateWithoutAuthorInput {
   id: ID
   title: String!
-  published: Boolean
+  text: String!
 }
 
 type PostEdge {
@@ -90,14 +90,14 @@ enum PostOrderByInput {
   id_DESC
   title_ASC
   title_DESC
-  published_ASC
-  published_DESC
+  text_ASC
+  text_DESC
 }
 
 type PostPreviousValues {
   id: ID!
   title: String!
-  published: Boolean!
+  text: String!
 }
 
 input PostScalarWhereInput {
@@ -129,8 +129,20 @@ input PostScalarWhereInput {
   title_not_starts_with: String
   title_ends_with: String
   title_not_ends_with: String
-  published: Boolean
-  published_not: Boolean
+  text: String
+  text_not: String
+  text_in: [String!]
+  text_not_in: [String!]
+  text_lt: String
+  text_lte: String
+  text_gt: String
+  text_gte: String
+  text_contains: String
+  text_not_contains: String
+  text_starts_with: String
+  text_not_starts_with: String
+  text_ends_with: String
+  text_not_ends_with: String
   AND: [PostScalarWhereInput!]
   OR: [PostScalarWhereInput!]
   NOT: [PostScalarWhereInput!]
@@ -154,18 +166,18 @@ input PostSubscriptionWhereInput {
 
 input PostUpdateInput {
   title: String
-  published: Boolean
+  text: String
   author: UserUpdateOneWithoutPostsInput
 }
 
 input PostUpdateManyDataInput {
   title: String
-  published: Boolean
+  text: String
 }
 
 input PostUpdateManyMutationInput {
   title: String
-  published: Boolean
+  text: String
 }
 
 input PostUpdateManyWithoutAuthorInput {
@@ -187,7 +199,7 @@ input PostUpdateManyWithWhereNestedInput {
 
 input PostUpdateWithoutAuthorDataInput {
   title: String
-  published: Boolean
+  text: String
 }
 
 input PostUpdateWithWhereUniqueWithoutAuthorInput {
@@ -230,8 +242,20 @@ input PostWhereInput {
   title_not_starts_with: String
   title_ends_with: String
   title_not_ends_with: String
-  published: Boolean
-  published_not: Boolean
+  text: String
+  text_not: String
+  text_in: [String!]
+  text_not_in: [String!]
+  text_lt: String
+  text_lte: String
+  text_gt: String
+  text_gte: String
+  text_contains: String
+  text_not_contains: String
+  text_starts_with: String
+  text_not_starts_with: String
+  text_ends_with: String
+  text_not_ends_with: String
   author: UserWhereInput
   AND: [PostWhereInput!]
 }
@@ -259,6 +283,7 @@ type User {
   id: ID!
   name: String!
   email: String!
+  password: String!
   posts(where: PostWhereInput, orderBy: PostOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Post!]
 }
 
@@ -272,6 +297,7 @@ input UserCreateInput {
   id: ID
   name: String!
   email: String!
+  password: String!
   posts: PostCreateManyWithoutAuthorInput
 }
 
@@ -284,6 +310,7 @@ input UserCreateWithoutPostsInput {
   id: ID
   name: String!
   email: String!
+  password: String!
 }
 
 type UserEdge {
@@ -298,12 +325,15 @@ enum UserOrderByInput {
   name_DESC
   email_ASC
   email_DESC
+  password_ASC
+  password_DESC
 }
 
 type UserPreviousValues {
   id: ID!
   name: String!
   email: String!
+  password: String!
 }
 
 type UserSubscriptionPayload {
@@ -325,12 +355,14 @@ input UserSubscriptionWhereInput {
 input UserUpdateInput {
   name: String
   email: String
+  password: String
   posts: PostUpdateManyWithoutAuthorInput
 }
 
 input UserUpdateManyMutationInput {
   name: String
   email: String
+  password: String
 }
 
 input UserUpdateOneWithoutPostsInput {
@@ -345,6 +377,7 @@ input UserUpdateOneWithoutPostsInput {
 input UserUpdateWithoutPostsDataInput {
   name: String
   email: String
+  password: String
 }
 
 input UserUpsertWithoutPostsInput {
@@ -395,6 +428,20 @@ input UserWhereInput {
   email_not_starts_with: String
   email_ends_with: String
   email_not_ends_with: String
+  password: String
+  password_not: String
+  password_in: [String!]
+  password_not_in: [String!]
+  password_lt: String
+  password_lte: String
+  password_gt: String
+  password_gte: String
+  password_contains: String
+  password_not_contains: String
+  password_starts_with: String
+  password_not_starts_with: String
+  password_ends_with: String
+  password_not_ends_with: String
   posts_some: PostWhereInput
   AND: [UserWhereInput!]
 }
