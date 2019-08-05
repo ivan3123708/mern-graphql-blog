@@ -3,6 +3,7 @@ type Query {
   users: [User!]!
   post: Post
   posts: [Post!]!
+  comments: [Comment!]!
 }
 
 type Mutation {
@@ -13,6 +14,9 @@ type Mutation {
   createPost(data: CreatePostInput!): Post!
   updatePost(data: UpdatePostInput!): Post!
   deletePost(id: ID!): Post!
+  createComment(data: CreateCommentInput!): Comment!
+  updateComment(data: UpdateCommentInput!): Comment!
+  deleteComment(id: ID!): Comment!
 }
 
 type User {
@@ -21,6 +25,8 @@ type User {
   email: String!
   password: String!
   posts: [Post!]!
+  comments: [Comment!]!
+  createdAt: String!
 }
 
 type Post {
@@ -28,6 +34,16 @@ type Post {
   title: String!
   text: String!
   author: User!
+  comments: [Comment!]!
+  createdAt: String!
+}
+
+type Comment {
+  id: ID!
+  text: String!
+  author: User!
+  post: Post!
+  createdAt: String!
 }
 
 input LoginUserInput {
@@ -58,6 +74,17 @@ input CreatePostInput {
 }
 
 input UpdatePostInput {
+  id: ID!
   title: String
   text: String
+}
+
+input CreateCommentInput {
+  text: String!
+  post: ID!
+}
+
+input UpdateCommentInput {
+  id: ID!
+  text: String!
 }

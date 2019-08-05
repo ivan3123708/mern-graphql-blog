@@ -55,6 +55,42 @@ const Mutation = {
     });
 
     return post;
+  },
+  async createComment(parent, args, { userId, prisma }) {
+    const comment = await prisma.createComment({
+      text: args.data.text,
+      author: {
+        connect: {
+          id: userId
+        }
+      },
+      post: {
+        connect: {
+          id: args.data.post
+        }
+      }
+    });
+
+    return comment;
+  },
+  async updateComment(parent, args, { prisma }) {
+    const comment = prisma.updateComment({
+      data: {
+        text: args.data.text
+      },
+      where: {
+        id: args.data.id
+      }
+    });
+
+    return comment;
+  },
+  async deleteComment(parent, args, { prisma }) {
+    const comment = await prisma.deleteComment({
+      id: args.id
+    });
+
+    return comment;
   }
 }
 
