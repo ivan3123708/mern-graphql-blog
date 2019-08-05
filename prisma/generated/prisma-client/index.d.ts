@@ -160,12 +160,10 @@ export type UserOrderByInput =
 
 export type MutationType = "CREATED" | "UPDATED" | "DELETED";
 
-export interface UserUpdateOneWithoutPostsInput {
+export interface UserUpdateOneRequiredWithoutPostsInput {
   create?: Maybe<UserCreateWithoutPostsInput>;
   update?: Maybe<UserUpdateWithoutPostsDataInput>;
   upsert?: Maybe<UserUpsertWithoutPostsInput>;
-  delete?: Maybe<Boolean>;
-  disconnect?: Maybe<Boolean>;
   connect?: Maybe<UserWhereUniqueInput>;
 }
 
@@ -229,7 +227,7 @@ export interface PostCreateInput {
   id?: Maybe<ID_Input>;
   title: String;
   text: String;
-  author?: Maybe<UserCreateOneWithoutPostsInput>;
+  author: UserCreateOneWithoutPostsInput;
 }
 
 export interface PostCreateManyWithoutAuthorInput {
@@ -266,7 +264,7 @@ export interface PostUpdateManyDataInput {
 export interface PostUpdateInput {
   title?: Maybe<String>;
   text?: Maybe<String>;
-  author?: Maybe<UserUpdateOneWithoutPostsInput>;
+  author?: Maybe<UserUpdateOneRequiredWithoutPostsInput>;
 }
 
 export type UserWhereUniqueInput = AtLeastOne<{

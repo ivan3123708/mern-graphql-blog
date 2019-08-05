@@ -53,7 +53,7 @@ type Post {
   id: ID!
   title: String!
   text: String!
-  author: User
+  author: User!
 }
 
 type PostConnection {
@@ -66,7 +66,7 @@ input PostCreateInput {
   id: ID
   title: String!
   text: String!
-  author: UserCreateOneWithoutPostsInput
+  author: UserCreateOneWithoutPostsInput!
 }
 
 input PostCreateManyWithoutAuthorInput {
@@ -167,7 +167,7 @@ input PostSubscriptionWhereInput {
 input PostUpdateInput {
   title: String
   text: String
-  author: UserUpdateOneWithoutPostsInput
+  author: UserUpdateOneRequiredWithoutPostsInput
 }
 
 input PostUpdateManyDataInput {
@@ -365,12 +365,10 @@ input UserUpdateManyMutationInput {
   password: String
 }
 
-input UserUpdateOneWithoutPostsInput {
+input UserUpdateOneRequiredWithoutPostsInput {
   create: UserCreateWithoutPostsInput
   update: UserUpdateWithoutPostsDataInput
   upsert: UserUpsertWithoutPostsInput
-  delete: Boolean
-  disconnect: Boolean
   connect: UserWhereUniqueInput
 }
 

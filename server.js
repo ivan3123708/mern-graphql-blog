@@ -5,6 +5,7 @@ const { ApolloServer } = require('apollo-server-express');
 const { importSchema } = require('graphql-import');
 const { prisma } = require('./prisma/generated/prisma-client');
 const resolvers = require('./src/resolvers');
+const getUserId = require('./src/utils/getUserId');
 
 const typeDefs = importSchema('./src/schema.graphql');
 
@@ -16,9 +17,13 @@ app.use(cors());
 const server = new ApolloServer({
   typeDefs,
   resolvers,
-  context: () => ({
-    prisma
-  })
+  context: async ({ req }) => {
+    const token = req.headers.authorization ? req.headers.authorization.replace('Bearer ', '') : null;
+
+    const userId = await getUserId(token);
+    
+    return { userId, prisma };
+  }
 });
 
 server.applyMiddleware({

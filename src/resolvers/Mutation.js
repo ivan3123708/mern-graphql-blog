@@ -1,5 +1,4 @@
 const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
 const generateToken = require('../utils/generateToken');
 
 const Mutation = {
@@ -36,6 +35,26 @@ const Mutation = {
     const token = generateToken(user.id);
 
     return { user, token };
+  },
+  async createPost(parent, args, { userId, prisma }) {
+    const post = await prisma.createPost({
+      title: args.data.title,
+      text: args.data.text,
+      author: {
+        connect: {
+          id: userId
+        }
+      }
+    });
+
+    return post;
+  },
+  async deletePost(parent, args, { prisma }) {
+    const post = await prisma.deletePost({
+        id: args.id
+    });
+
+    return post;
   }
 }
 
