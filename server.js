@@ -21,7 +21,7 @@ const server = new ApolloServer({
     const token = req.headers.authorization ? req.headers.authorization.replace('Bearer ', '') : null;
 
     const userId = await getUserId(token);
-    
+
     return { userId, prisma };
   }
 });

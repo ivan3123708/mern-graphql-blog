@@ -36,7 +36,36 @@ const Mutation = {
 
     return { user, token };
   },
+  async updateUser(parent, args, { userId, prisma }) {
+    if (!userId) {
+      throw new Error('You must be logged in');
+    }
+
+    const user = await prisma.updateUser({
+      data: { ...args.data },
+      where: {
+        id: userId
+      }
+    });
+
+    return user;
+  },
+  async deleteUser(parent, args, { userId, prisma }) {
+    if (!userId) {
+      throw new Error('You must be logged in');
+    }
+
+    const user = await prisma.deleteUser({
+      id: userId
+    });
+
+    return user;
+  },
   async createPost(parent, args, { userId, prisma }) {
+    if (!userId) {
+      throw new Error('You must be logged in');
+    }
+
     const post = await prisma.createPost({
       title: args.data.title,
       text: args.data.text,
@@ -49,7 +78,37 @@ const Mutation = {
 
     return post;
   },
-  async deletePost(parent, args, { prisma }) {
+  async updatePost(parent, args, { userId, prisma }) {
+    if (!userId) {
+      throw new Error('You must be logged in');
+    }
+
+    const postAuthor = await prisma.post({ id: args.id }).author();
+
+    if (postAuthor.id !== userId) {
+      throw new Error('You can edit only your posts');
+    }
+
+    const post = await prisma.updatePost({
+      data: { ...args.data },
+      where: {
+        id: args.id
+      }
+    });
+
+    return post;
+  },
+  async deletePost(parent, args, { userId, prisma }) {
+    if (!userId) {
+      throw new Error('You must be logged in');
+    }
+
+    const postAuthor = await prisma.post({ id: args.id }).author();
+
+    if (postAuthor.id !== userId) {
+      throw new Error('You can delete only your posts');
+    }
+
     const post = await prisma.deletePost({
         id: args.id
     });
@@ -57,6 +116,10 @@ const Mutation = {
     return post;
   },
   async createComment(parent, args, { userId, prisma }) {
+    if (!userId) {
+      throw new Error('You must be logged in');
+    }
+
     const comment = await prisma.createComment({
       text: args.data.text,
       author: {
@@ -73,19 +136,37 @@ const Mutation = {
 
     return comment;
   },
-  async updateComment(parent, args, { prisma }) {
+  async updateComment(parent, args, { userId, prisma }) {
+    if (!userId) {
+      throw new Error('You must be logged in');
+    }
+
+    const commentAuthor = await prisma.comment({ id: args.id }).author();
+
+    if (commentAuthor.id !== userId) {
+      throw new Error('You can edit only your comments');
+    }
+
     const comment = prisma.updateComment({
-      data: {
-        text: args.data.text
-      },
+      data: { ...args.data },
       where: {
-        id: args.data.id
+        id: args.id
       }
     });
 
     return comment;
   },
-  async deleteComment(parent, args, { prisma }) {
+  async deleteComment(parent, args, { userId, prisma }) {
+    if (!userId) {
+      throw new Error('You must be logged in');
+    }
+
+    const commentAuthor = await prisma.comment({ id: args.id }).author();
+
+    if (commentAuthor.id !== userId) {
+      throw new Error('You can delete only your comments');
+    }
+
     const comment = await prisma.deleteComment({
       id: args.id
     });
