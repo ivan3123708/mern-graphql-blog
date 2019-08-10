@@ -21,7 +21,8 @@ type Mutation {
 
 type User {
   id: ID!
-  name: String!
+  firstName: String!
+  lastName: String!
   email: String!
   password: String!
   posts: [Post!]!
@@ -57,7 +58,8 @@ type AuthPayload {
 }
 
 input CreateUserInput {
-  name: String!
+  firstName: String!
+  lastName: String!
   email: String!
   password: String!
 }

@@ -27,7 +27,8 @@ const Mutation = {
     const password = await bcrypt.hash(args.data.password, 10);
 
     const user = await prisma.createUser({
-      name: args.data.name,
+      firstName: args.data.firstName,
+      lastName: args.data.lastName,
       email: args.data.email,
       password: password
     });
