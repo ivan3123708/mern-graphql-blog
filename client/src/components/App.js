@@ -1,15 +1,14 @@
 import React from 'react';
+import { IconContext } from 'react-icons';
+import Header from './_partials/Header';
 
-function App() {
+const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-          
-        </p>
-      </header>
-    </div>
+    <IconContext.Provider value={{ size: "1.5em" }}>
+      <div className="App">
+        <Header />
+      </div>
+    </IconContext.Provider>
   );
 }
 

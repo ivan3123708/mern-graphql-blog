@@ -1,0 +1,23 @@
+body {
+  margin: 0;
+  color: #6b778c;
+  font-family: 'Source Sans Pro', sans-serif;
+}
+
+a {
+  cursor: pointer;
+}
+
+input {
+  padding: 10px 4px;
+  font-size: 14px;
+  color: #6b778c;
+  border: 1px solid #6b778c46;
+  border-radius: 4px;
+  background-color: #ffffff;
+  outline: none;
+}
+
+input:focus {
+  border: 1px solid #03a87c;
+}
