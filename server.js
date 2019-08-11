@@ -28,7 +28,7 @@ const server = new ApolloServer({
 
 server.applyMiddleware({
   app,
-  path: '/api/graphql'
+  path: '/graphql'
 });
 
 app.get('*', (req, res) => {
