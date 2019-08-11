@@ -10,3 +10,15 @@ export const LOGIN = gql`
     }
   }
 `;
+
+export const SIGNUP = gql`
+  mutation createUser($data: CreateUserInput!) {
+    createUser(data: $data) {
+      user {
+        firstName
+        lastName
+      }
+      token
+    }
+  }
+`;

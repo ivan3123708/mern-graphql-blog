@@ -7,4 +7,10 @@
   font-size: 16px;
   text-decoration: none;
   cursor: pointer;
+
+  &:disabled {
+    color: #03a87c63;
+    border: 1px solid #03a87c63;
+    cursor: wait;
+  }
 }
