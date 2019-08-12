@@ -44,10 +44,10 @@ const SignupModal = ({ setShowModal, setToken }) => {
             <h2>Create an account to receive great stories in your inbox, personalize your homepage, and follow authors and topics that you love.</h2>
             <form onSubmit={signupUser}>
               <span className="error">{error && error.message.replace('GraphQL error: ', '')}</span>
-              <input name="first_name" type="text" placeholder="First Name" />
-              <input name="last_name" type="text" placeholder="Last Name" />
-              <input name="email" type="email" placeholder="Email" />
-              <input name="password" type="password" placeholder="Password" />
+              <input name="first_name" type="text" placeholder="First Name" required />
+              <input name="last_name" type="text" placeholder="Last Name" required />
+              <input name="email" type="email" placeholder="Email" required />
+              <input name="password" type="password" placeholder="Password" required />
               <button className="btn-outline" disabled={loading}>Sign in</button>
             </form>
             <span>Already have an account? <a onClick={() => setShowModal('login')}>Sign in</a></span>
