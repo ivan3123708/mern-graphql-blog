@@ -327,8 +327,10 @@ type Post {
   id: ID!
   title: String!
   text: String!
+  category: String!
   author: User!
   comments(where: CommentWhereInput, orderBy: CommentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Comment!]
+  likes(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User!]
   createdAt: DateTime
   updatedAt: DateTime
 }
@@ -343,8 +345,15 @@ input PostCreateInput {
   id: ID
   title: String!
   text: String!
+  category: String!
   author: UserCreateOneWithoutPostsInput!
   comments: CommentCreateManyWithoutPostInput
+  likes: UserCreateManyInput
+}
+
+input PostCreateManyInput {
+  create: [PostCreateInput!]
+  connect: [PostWhereUniqueInput!]
 }
 
 input PostCreateManyWithoutAuthorInput {
@@ -361,14 +370,18 @@ input PostCreateWithoutAuthorInput {
   id: ID
   title: String!
   text: String!
+  category: String!
   comments: CommentCreateManyWithoutPostInput
+  likes: UserCreateManyInput
 }
 
 input PostCreateWithoutCommentsInput {
   id: ID
   title: String!
   text: String!
+  category: String!
   author: UserCreateOneWithoutPostsInput!
+  likes: UserCreateManyInput
 }
 
 type PostEdge {
@@ -383,6 +396,8 @@ enum PostOrderByInput {
   title_DESC
   text_ASC
   text_DESC
+  category_ASC
+  category_DESC
   createdAt_ASC
   createdAt_DESC
   updatedAt_ASC
@@ -393,6 +408,7 @@ type PostPreviousValues {
   id: ID!
   title: String!
   text: String!
+  category: String!
   createdAt: DateTime
   updatedAt: DateTime
 }
@@ -440,6 +456,20 @@ input PostScalarWhereInput {
   text_not_starts_with: String
   text_ends_with: String
   text_not_ends_with: String
+  category: String
+  category_not: String
+  category_in: [String!]
+  category_not_in: [String!]
+  category_lt: String
+  category_lte: String
+  category_gt: String
+  category_gte: String
+  category_contains: String
+  category_not_contains: String
+  category_starts_with: String
+  category_not_starts_with: String
+  category_ends_with: String
+  category_not_ends_with: String
   createdAt: DateTime
   createdAt_not: DateTime
   createdAt_in: [DateTime!]
@@ -477,21 +507,46 @@ input PostSubscriptionWhereInput {
   AND: [PostSubscriptionWhereInput!]
 }
 
+input PostUpdateDataInput {
+  title: String
+  text: String
+  category: String
+  author: UserUpdateOneRequiredWithoutPostsInput
+  comments: CommentUpdateManyWithoutPostInput
+  likes: UserUpdateManyInput
+}
+
 input PostUpdateInput {
   title: String
   text: String
+  category: String
   author: UserUpdateOneRequiredWithoutPostsInput
   comments: CommentUpdateManyWithoutPostInput
+  likes: UserUpdateManyInput
 }
 
 input PostUpdateManyDataInput {
   title: String
   text: String
+  category: String
+}
+
+input PostUpdateManyInput {
+  create: [PostCreateInput!]
+  update: [PostUpdateWithWhereUniqueNestedInput!]
+  upsert: [PostUpsertWithWhereUniqueNestedInput!]
+  delete: [PostWhereUniqueInput!]
+  connect: [PostWhereUniqueInput!]
+  set: [PostWhereUniqueInput!]
+  disconnect: [PostWhereUniqueInput!]
+  deleteMany: [PostScalarWhereInput!]
+  updateMany: [PostUpdateManyWithWhereNestedInput!]
 }
 
 input PostUpdateManyMutationInput {
   title: String
   text: String
+  category: String
 }
 
 input PostUpdateManyWithoutAuthorInput {
@@ -521,13 +576,22 @@ input PostUpdateOneRequiredWithoutCommentsInput {
 input PostUpdateWithoutAuthorDataInput {
   title: String
   text: String
+  category: String
   comments: CommentUpdateManyWithoutPostInput
+  likes: UserUpdateManyInput
 }
 
 input PostUpdateWithoutCommentsDataInput {
   title: String
   text: String
+  category: String
   author: UserUpdateOneRequiredWithoutPostsInput
+  likes: UserUpdateManyInput
+}
+
+input PostUpdateWithWhereUniqueNestedInput {
+  where: PostWhereUniqueInput!
+  data: PostUpdateDataInput!
 }
 
 input PostUpdateWithWhereUniqueWithoutAuthorInput {
@@ -538,6 +602,12 @@ input PostUpdateWithWhereUniqueWithoutAuthorInput {
 input PostUpsertWithoutCommentsInput {
   update: PostUpdateWithoutCommentsDataInput!
   create: PostCreateWithoutCommentsInput!
+}
+
+input PostUpsertWithWhereUniqueNestedInput {
+  where: PostWhereUniqueInput!
+  update: PostUpdateDataInput!
+  create: PostCreateInput!
 }
 
 input PostUpsertWithWhereUniqueWithoutAuthorInput {
@@ -589,8 +659,23 @@ input PostWhereInput {
   text_not_starts_with: String
   text_ends_with: String
   text_not_ends_with: String
+  category: String
+  category_not: String
+  category_in: [String!]
+  category_not_in: [String!]
+  category_lt: String
+  category_lte: String
+  category_gt: String
+  category_gte: String
+  category_contains: String
+  category_not_contains: String
+  category_starts_with: String
+  category_not_starts_with: String
+  category_ends_with: String
+  category_not_ends_with: String
   author: UserWhereInput
   comments_some: CommentWhereInput
+  likes_some: UserWhereInput
   createdAt: DateTime
   createdAt_not: DateTime
   createdAt_in: [DateTime!]
@@ -641,6 +726,7 @@ type User {
   password: String!
   posts(where: PostWhereInput, orderBy: PostOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Post!]
   comments(where: CommentWhereInput, orderBy: CommentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Comment!]
+  likes(where: PostWhereInput, orderBy: PostOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Post!]
   createdAt: DateTime
   updatedAt: DateTime
 }
@@ -659,6 +745,12 @@ input UserCreateInput {
   password: String!
   posts: PostCreateManyWithoutAuthorInput
   comments: CommentCreateManyWithoutAuthorInput
+  likes: PostCreateManyInput
+}
+
+input UserCreateManyInput {
+  create: [UserCreateInput!]
+  connect: [UserWhereUniqueInput!]
 }
 
 input UserCreateOneWithoutCommentsInput {
@@ -678,6 +770,7 @@ input UserCreateWithoutCommentsInput {
   email: String!
   password: String!
   posts: PostCreateManyWithoutAuthorInput
+  likes: PostCreateManyInput
 }
 
 input UserCreateWithoutPostsInput {
@@ -687,6 +780,7 @@ input UserCreateWithoutPostsInput {
   email: String!
   password: String!
   comments: CommentCreateManyWithoutAuthorInput
+  likes: PostCreateManyInput
 }
 
 type UserEdge {
@@ -721,6 +815,98 @@ type UserPreviousValues {
   updatedAt: DateTime
 }
 
+input UserScalarWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  firstName: String
+  firstName_not: String
+  firstName_in: [String!]
+  firstName_not_in: [String!]
+  firstName_lt: String
+  firstName_lte: String
+  firstName_gt: String
+  firstName_gte: String
+  firstName_contains: String
+  firstName_not_contains: String
+  firstName_starts_with: String
+  firstName_not_starts_with: String
+  firstName_ends_with: String
+  firstName_not_ends_with: String
+  lastName: String
+  lastName_not: String
+  lastName_in: [String!]
+  lastName_not_in: [String!]
+  lastName_lt: String
+  lastName_lte: String
+  lastName_gt: String
+  lastName_gte: String
+  lastName_contains: String
+  lastName_not_contains: String
+  lastName_starts_with: String
+  lastName_not_starts_with: String
+  lastName_ends_with: String
+  lastName_not_ends_with: String
+  email: String
+  email_not: String
+  email_in: [String!]
+  email_not_in: [String!]
+  email_lt: String
+  email_lte: String
+  email_gt: String
+  email_gte: String
+  email_contains: String
+  email_not_contains: String
+  email_starts_with: String
+  email_not_starts_with: String
+  email_ends_with: String
+  email_not_ends_with: String
+  password: String
+  password_not: String
+  password_in: [String!]
+  password_not_in: [String!]
+  password_lt: String
+  password_lte: String
+  password_gt: String
+  password_gte: String
+  password_contains: String
+  password_not_contains: String
+  password_starts_with: String
+  password_not_starts_with: String
+  password_ends_with: String
+  password_not_ends_with: String
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
+  AND: [UserScalarWhereInput!]
+  OR: [UserScalarWhereInput!]
+  NOT: [UserScalarWhereInput!]
+}
+
 type UserSubscriptionPayload {
   mutation: MutationType!
   node: User
@@ -737,6 +923,16 @@ input UserSubscriptionWhereInput {
   AND: [UserSubscriptionWhereInput!]
 }
 
+input UserUpdateDataInput {
+  firstName: String
+  lastName: String
+  email: String
+  password: String
+  posts: PostUpdateManyWithoutAuthorInput
+  comments: CommentUpdateManyWithoutAuthorInput
+  likes: PostUpdateManyInput
+}
+
 input UserUpdateInput {
   firstName: String
   lastName: String
@@ -744,6 +940,26 @@ input UserUpdateInput {
   password: String
   posts: PostUpdateManyWithoutAuthorInput
   comments: CommentUpdateManyWithoutAuthorInput
+  likes: PostUpdateManyInput
+}
+
+input UserUpdateManyDataInput {
+  firstName: String
+  lastName: String
+  email: String
+  password: String
+}
+
+input UserUpdateManyInput {
+  create: [UserCreateInput!]
+  update: [UserUpdateWithWhereUniqueNestedInput!]
+  upsert: [UserUpsertWithWhereUniqueNestedInput!]
+  delete: [UserWhereUniqueInput!]
+  connect: [UserWhereUniqueInput!]
+  set: [UserWhereUniqueInput!]
+  disconnect: [UserWhereUniqueInput!]
+  deleteMany: [UserScalarWhereInput!]
+  updateMany: [UserUpdateManyWithWhereNestedInput!]
 }
 
 input UserUpdateManyMutationInput {
@@ -751,6 +967,11 @@ input UserUpdateManyMutationInput {
   lastName: String
   email: String
   password: String
+}
+
+input UserUpdateManyWithWhereNestedInput {
+  where: UserScalarWhereInput!
+  data: UserUpdateManyDataInput!
 }
 
 input UserUpdateOneRequiredWithoutCommentsInput {
@@ -773,6 +994,7 @@ input UserUpdateWithoutCommentsDataInput {
   email: String
   password: String
   posts: PostUpdateManyWithoutAuthorInput
+  likes: PostUpdateManyInput
 }
 
 input UserUpdateWithoutPostsDataInput {
@@ -781,6 +1003,12 @@ input UserUpdateWithoutPostsDataInput {
   email: String
   password: String
   comments: CommentUpdateManyWithoutAuthorInput
+  likes: PostUpdateManyInput
+}
+
+input UserUpdateWithWhereUniqueNestedInput {
+  where: UserWhereUniqueInput!
+  data: UserUpdateDataInput!
 }
 
 input UserUpsertWithoutCommentsInput {
@@ -791,6 +1019,12 @@ input UserUpsertWithoutCommentsInput {
 input UserUpsertWithoutPostsInput {
   update: UserUpdateWithoutPostsDataInput!
   create: UserCreateWithoutPostsInput!
+}
+
+input UserUpsertWithWhereUniqueNestedInput {
+  where: UserWhereUniqueInput!
+  update: UserUpdateDataInput!
+  create: UserCreateInput!
 }
 
 input UserWhereInput {
@@ -866,6 +1100,7 @@ input UserWhereInput {
   password_not_ends_with: String
   posts_some: PostWhereInput
   comments_some: CommentWhereInput
+  likes_some: PostWhereInput
   createdAt: DateTime
   createdAt_not: DateTime
   createdAt_in: [DateTime!]
