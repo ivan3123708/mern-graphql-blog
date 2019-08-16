@@ -1,0 +1,223 @@
+.homepage {
+  min-height: 100vh;
+
+  &__container {
+    display: grid;
+    grid-template-areas:
+      'latest latest latest latest latest'
+      'following following following popular popular'
+      'following following following popular popular'
+      'following following following popular popular';
+    grid-gap: 10px;
+    width: 75%;
+    margin: auto;
+    padding-top: 75px;
+  }
+
+  &__latest {
+    grid-area: latest;
+    display: flex;
+    justify-content: space-between;
+    padding: 20px 0;
+    border-bottom: 1px solid #00000017;
+
+    > div {
+      width: 32%;
+
+      article {
+        margin-bottom: 18px;
+      }
+    }
+
+    &__post-big {
+      .img {
+        width: 100%;
+        height: 150px;
+        background-color: rgb(190, 190, 190);
+      }
+
+      .text {
+        a h1 {
+          margin: 10px 0;
+        }
+
+        a:hover {
+          text-decoration: underline;
+        }
+
+        p {
+          margin: 10px 0;
+          color: $text-light;
+        }
+
+        span {
+          display: inline-block;
+          margin: 2px 0;
+
+          > a {
+            color: $green;
+          }
+
+          > svg {
+            height: 12px;
+            margin: 0 4px;
+            color: $pink;
+          }
+        }
+      }
+    }
+
+    &__post {
+      display: flex;
+
+      .img {
+        width: 100px;
+        height: 100px;
+        background-color: rgb(190, 190, 190);
+      }
+
+      .text {
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        width: 100px;
+        margin-left: 10px;
+
+        a h1 {
+          margin: 0;
+          font-size: 20px;
+        }
+
+        a:hover {
+          text-decoration: underline;
+        }
+
+        span {
+          display: inline-block;
+
+          > a {
+            color: $green;
+          }
+
+          > svg {
+            height: 12px;
+            margin: 0 4px;
+            color: $pink;
+          }
+        }
+      }
+    }
+  }
+
+  &__following {
+    grid-area: following;
+    height: 300px;
+    padding: 50px 0;
+
+    article {
+      display: flex;
+      margin-bottom: 30px;
+
+      .img {
+        width: 150px;
+        height: 150px;
+        background-color: rgb(190, 190, 190);
+      }
+
+      .text {
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        width: 100px;
+        margin-right: 10px;
+
+        a h1 {
+          margin: 0;
+        }
+
+        a:hover {
+          text-decoration: underline;
+        }
+
+        p {
+          margin: 10px 0;
+          color: $text-light;
+        }
+
+        span {
+          display: inline-block;
+
+          > a {
+            color: $green;
+          }
+
+          > svg {
+            height: 12px;
+            margin: 0 4px;
+            color: $pink;
+          }
+        }
+      }
+    }
+  }
+
+  &__popular {
+    grid-area: popular;
+    background-color: $green-light;
+    padding: 50px 0;
+
+    > h1 {
+      width: 90%;
+      margin: 0 auto 24px;
+      font-size: 24px;
+      letter-spacing: 2px;
+    }
+
+    article {
+      display: flex;
+      width: 90%;
+      margin: 0 auto 30px;
+
+      .img {
+        width: 75px;
+        height: 75px;
+        background-color: rgb(190, 190, 190);
+        border-radius: 50%;
+      }
+
+      .text {
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        width: 100px;
+        margin-left: 10px;
+
+        a h1 {
+          margin: 0;
+          font-size: 20px;
+        }
+
+        a:hover {
+          text-decoration: underline;
+        }
+
+        span {
+          display: inline-block;
+
+          > a {
+            color: $green;
+          }
+
+          > svg {
+            height: 12px;
+            margin: 0 4px;
+            color: $pink;
+          }
+        }
+      }
+    }
+  }
+}

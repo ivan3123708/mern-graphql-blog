@@ -1,6 +1,7 @@
 #modal-root {
   position: relative;
-  z-index: 999;
+  margin-top: -100vh;
+  z-index: 10;
 }
 
 .modal {
@@ -69,7 +70,7 @@
         margin-top: 20px;
 
         > a {
-          color: #03a87c;
+          color: $green;
           text-decoration: none;
         }
       }
