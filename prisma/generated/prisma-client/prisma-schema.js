@@ -330,7 +330,8 @@ type Post {
   category: String!
   author: User!
   comments(where: CommentWhereInput, orderBy: CommentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Comment!]
-  likes(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User!]
+  likedBy(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User!]
+  likes: Int!
   createdAt: DateTime
   updatedAt: DateTime
 }
@@ -348,7 +349,8 @@ input PostCreateInput {
   category: String!
   author: UserCreateOneWithoutPostsInput!
   comments: CommentCreateManyWithoutPostInput
-  likes: UserCreateManyInput
+  likedBy: UserCreateManyInput
+  likes: Int
 }
 
 input PostCreateManyInput {
@@ -372,7 +374,8 @@ input PostCreateWithoutAuthorInput {
   text: String!
   category: String!
   comments: CommentCreateManyWithoutPostInput
-  likes: UserCreateManyInput
+  likedBy: UserCreateManyInput
+  likes: Int
 }
 
 input PostCreateWithoutCommentsInput {
@@ -381,7 +384,8 @@ input PostCreateWithoutCommentsInput {
   text: String!
   category: String!
   author: UserCreateOneWithoutPostsInput!
-  likes: UserCreateManyInput
+  likedBy: UserCreateManyInput
+  likes: Int
 }
 
 type PostEdge {
@@ -398,6 +402,8 @@ enum PostOrderByInput {
   text_DESC
   category_ASC
   category_DESC
+  likes_ASC
+  likes_DESC
   createdAt_ASC
   createdAt_DESC
   updatedAt_ASC
@@ -409,6 +415,7 @@ type PostPreviousValues {
   title: String!
   text: String!
   category: String!
+  likes: Int!
   createdAt: DateTime
   updatedAt: DateTime
 }
@@ -470,6 +477,14 @@ input PostScalarWhereInput {
   category_not_starts_with: String
   category_ends_with: String
   category_not_ends_with: String
+  likes: Int
+  likes_not: Int
+  likes_in: [Int!]
+  likes_not_in: [Int!]
+  likes_lt: Int
+  likes_lte: Int
+  likes_gt: Int
+  likes_gte: Int
   createdAt: DateTime
   createdAt_not: DateTime
   createdAt_in: [DateTime!]
@@ -513,7 +528,8 @@ input PostUpdateDataInput {
   category: String
   author: UserUpdateOneRequiredWithoutPostsInput
   comments: CommentUpdateManyWithoutPostInput
-  likes: UserUpdateManyInput
+  likedBy: UserUpdateManyInput
+  likes: Int
 }
 
 input PostUpdateInput {
@@ -522,13 +538,15 @@ input PostUpdateInput {
   category: String
   author: UserUpdateOneRequiredWithoutPostsInput
   comments: CommentUpdateManyWithoutPostInput
-  likes: UserUpdateManyInput
+  likedBy: UserUpdateManyInput
+  likes: Int
 }
 
 input PostUpdateManyDataInput {
   title: String
   text: String
   category: String
+  likes: Int
 }
 
 input PostUpdateManyInput {
@@ -547,6 +565,7 @@ input PostUpdateManyMutationInput {
   title: String
   text: String
   category: String
+  likes: Int
 }
 
 input PostUpdateManyWithoutAuthorInput {
@@ -578,7 +597,8 @@ input PostUpdateWithoutAuthorDataInput {
   text: String
   category: String
   comments: CommentUpdateManyWithoutPostInput
-  likes: UserUpdateManyInput
+  likedBy: UserUpdateManyInput
+  likes: Int
 }
 
 input PostUpdateWithoutCommentsDataInput {
@@ -586,7 +606,8 @@ input PostUpdateWithoutCommentsDataInput {
   text: String
   category: String
   author: UserUpdateOneRequiredWithoutPostsInput
-  likes: UserUpdateManyInput
+  likedBy: UserUpdateManyInput
+  likes: Int
 }
 
 input PostUpdateWithWhereUniqueNestedInput {
@@ -675,7 +696,15 @@ input PostWhereInput {
   category_not_ends_with: String
   author: UserWhereInput
   comments_some: CommentWhereInput
-  likes_some: UserWhereInput
+  likedBy_some: UserWhereInput
+  likes: Int
+  likes_not: Int
+  likes_in: [Int!]
+  likes_not_in: [Int!]
+  likes_lt: Int
+  likes_lte: Int
+  likes_gt: Int
+  likes_gte: Int
   createdAt: DateTime
   createdAt_not: DateTime
   createdAt_in: [DateTime!]
@@ -727,7 +756,7 @@ type User {
   posts(where: PostWhereInput, orderBy: PostOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Post!]
   comments(where: CommentWhereInput, orderBy: CommentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Comment!]
   following(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User!]
-  likes(where: PostWhereInput, orderBy: PostOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Post!]
+  likedPosts(where: PostWhereInput, orderBy: PostOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Post!]
   createdAt: DateTime
   updatedAt: DateTime
 }
@@ -747,7 +776,7 @@ input UserCreateInput {
   posts: PostCreateManyWithoutAuthorInput
   comments: CommentCreateManyWithoutAuthorInput
   following: UserCreateManyWithoutFollowingInput
-  likes: PostCreateManyInput
+  likedPosts: PostCreateManyInput
 }
 
 input UserCreateManyInput {
@@ -778,7 +807,7 @@ input UserCreateWithoutCommentsInput {
   password: String!
   posts: PostCreateManyWithoutAuthorInput
   following: UserCreateManyWithoutFollowingInput
-  likes: PostCreateManyInput
+  likedPosts: PostCreateManyInput
 }
 
 input UserCreateWithoutFollowingInput {
@@ -789,7 +818,7 @@ input UserCreateWithoutFollowingInput {
   password: String!
   posts: PostCreateManyWithoutAuthorInput
   comments: CommentCreateManyWithoutAuthorInput
-  likes: PostCreateManyInput
+  likedPosts: PostCreateManyInput
 }
 
 input UserCreateWithoutPostsInput {
@@ -800,7 +829,7 @@ input UserCreateWithoutPostsInput {
   password: String!
   comments: CommentCreateManyWithoutAuthorInput
   following: UserCreateManyWithoutFollowingInput
-  likes: PostCreateManyInput
+  likedPosts: PostCreateManyInput
 }
 
 type UserEdge {
@@ -951,7 +980,7 @@ input UserUpdateDataInput {
   posts: PostUpdateManyWithoutAuthorInput
   comments: CommentUpdateManyWithoutAuthorInput
   following: UserUpdateManyWithoutFollowingInput
-  likes: PostUpdateManyInput
+  likedPosts: PostUpdateManyInput
 }
 
 input UserUpdateInput {
@@ -962,7 +991,7 @@ input UserUpdateInput {
   posts: PostUpdateManyWithoutAuthorInput
   comments: CommentUpdateManyWithoutAuthorInput
   following: UserUpdateManyWithoutFollowingInput
-  likes: PostUpdateManyInput
+  likedPosts: PostUpdateManyInput
 }
 
 input UserUpdateManyDataInput {
@@ -1029,7 +1058,7 @@ input UserUpdateWithoutCommentsDataInput {
   password: String
   posts: PostUpdateManyWithoutAuthorInput
   following: UserUpdateManyWithoutFollowingInput
-  likes: PostUpdateManyInput
+  likedPosts: PostUpdateManyInput
 }
 
 input UserUpdateWithoutFollowingDataInput {
@@ -1039,7 +1068,7 @@ input UserUpdateWithoutFollowingDataInput {
   password: String
   posts: PostUpdateManyWithoutAuthorInput
   comments: CommentUpdateManyWithoutAuthorInput
-  likes: PostUpdateManyInput
+  likedPosts: PostUpdateManyInput
 }
 
 input UserUpdateWithoutPostsDataInput {
@@ -1049,7 +1078,7 @@ input UserUpdateWithoutPostsDataInput {
   password: String
   comments: CommentUpdateManyWithoutAuthorInput
   following: UserUpdateManyWithoutFollowingInput
-  likes: PostUpdateManyInput
+  likedPosts: PostUpdateManyInput
 }
 
 input UserUpdateWithWhereUniqueNestedInput {
@@ -1158,7 +1187,7 @@ input UserWhereInput {
   posts_some: PostWhereInput
   comments_some: CommentWhereInput
   following_some: UserWhereInput
-  likes_some: PostWhereInput
+  likedPosts_some: PostWhereInput
   createdAt: DateTime
   createdAt_not: DateTime
   createdAt_in: [DateTime!]

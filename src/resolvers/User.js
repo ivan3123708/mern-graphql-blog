@@ -8,8 +8,8 @@ const User = {
   following(parent, args, { prisma }) {
     return prisma.user({ id: parent.id }).following();
   },
-  likes(parent, args, { prisma }) {
-    return prisma.user({ id: parent.id }).likes();
+  likedPosts(parent, args, { prisma }) {
+    return prisma.user({ id: parent.id }).likedPosts();
   }
 }
 

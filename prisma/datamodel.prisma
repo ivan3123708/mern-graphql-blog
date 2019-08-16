@@ -7,7 +7,7 @@ type User {
   posts: [Post!]! @relation(name: "UserPosts", link: INLINE)
   comments: [Comment!]! @relation(name: "UserComments", link: INLINE)
   following: [User!]! @relation(name: "UserFollowing", link: INLINE)
-  likes: [Post!]! @relation(name: "UserLikes", link: INLINE)
+  likedPosts: [Post!]! @relation(name: "UserLikedPosts", link: INLINE)
   createdAt: DateTime @createdAt
   updatedAt: DateTime @updatedAt
 }
@@ -19,7 +19,8 @@ type Post {
   category: String!
   author: User! @relation(name: "UserPosts")
   comments: [Comment!]! @relation(name: "PostComments", link: INLINE)
-  likes: [User!]! @relation(name: "PostLikes", link: INLINE)
+  likedBy: [User!]! @relation(name: "PostLikedBy", link: INLINE)
+  likes: Int! @default(value: 0)
   createdAt: DateTime @createdAt
   updatedAt: DateTime @updatedAt
 }

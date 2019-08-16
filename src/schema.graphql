@@ -30,7 +30,7 @@ type User {
   posts: [Post!]!
   comments: [Comment!]!
   following: [User!]!
-  likes: [Post!]!
+  likedPosts: [Post!]!
   createdAt: String!
 }
 
@@ -41,7 +41,8 @@ type Post {
   category: String!
   author: User!
   comments: [Comment!]!
-  likes: [User!]!
+  likedBy: [User!]!
+  likes: Int!
   createdAt: String!
 }
 
