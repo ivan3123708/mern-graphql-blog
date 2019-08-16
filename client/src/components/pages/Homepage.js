@@ -1,88 +1,18 @@
 import React from 'react';
+import { useQuery } from '@apollo/react-hooks';
+import { GET_LATEST_POSTS } from '../../queries/queries';
 import moment from 'moment';
 import { FaHeart } from 'react-icons/fa';
 
-const posts = [
-  {
-    title: 'Learning React',
-    text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-    author: {
-      firstName: 'Stojan',
-      lastName: 'Kisic'
-    },
-    category: 'Programming',
-    likes: 124,
-    createdAt: "2019-08-12T19:07:56.488Z"
-  },
-  {
-    title: 'Learning Redux',
-    text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-    author: {
-      firstName: 'Stojan',
-      lastName: 'Kisic'
-    },
-    category: 'Programming',
-    likes: 124,
-    createdAt: "2019-08-12T19:07:56.488Z"
-  },
-  {
-    title: 'Learning Webpack',
-    text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-    author: {
-      firstName: 'Stojan',
-      lastName: 'Kisic'
-    },
-    category: 'Programming',
-    likes: 124,
-    createdAt: "2019-08-12T19:07:56.488Z"
-  },
-  {
-    title: 'Learning MongoDB',
-    text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-    author: {
-      firstName: 'Stojan',
-      lastName: 'Kisic'
-    },
-    category: 'Programming',
-    likes: 124,
-    createdAt: "2019-08-12T19:07:56.488Z"
-  },
-  {
-    title: 'Learning Angular',
-    text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-    author: {
-      firstName: 'Stojan',
-      lastName: 'Kisic'
-    },
-    category: 'Programming',
-    likes: 124,
-    createdAt: "2019-08-12T19:07:56.488Z"
-  },
-  {
-    title: 'Learning PHP',
-    text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-    author: {
-      firstName: 'Stojan',
-      lastName: 'Kisic'
-    },
-    category: 'Programming',
-    likes: 124,
-    createdAt: "2019-08-12T19:07:56.488Z"
-  },
-  {
-    title: 'Learning GraphQL',
-    text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-    author: {
-      firstName: 'Stojan',
-      lastName: 'Kisic'
-    },
-    category: 'Programming',
-    likes: 124,
-    createdAt: "2019-08-12T19:07:56.488Z"
-  }
-]
-
 const Homepage = () => {
+  const { loading, data: { posts } } = useQuery(GET_LATEST_POSTS);
+
+  if (loading) {
+    return (
+      <h1>LOADING</h1>
+    )
+  }
+
   return (
     <div className="homepage">
       <div className="homepage__container">
@@ -99,7 +29,7 @@ const Homepage = () => {
                   <a>{posts[0].author.firstName} {posts[0].author.lastName}</a> in <a>{posts[0].category}</a>
                 </span>
                 <br/>
-                <span>{moment(posts[0].createdAt).format('MMM D, YYYY')}<FaHeart />{posts[0].likes}</span>
+                <span>{moment(posts[0].createdAt).format('MMM D, YYYY')}<FaHeart />{posts[0].likes.length}</span>
               </div>
             </article>
           </div>
@@ -114,7 +44,7 @@ const Homepage = () => {
                   <span>
                     <a href="#">{article.author.firstName} {article.author.lastName}</a> in <a>{article.category}</a>
                     <br />
-                    {moment(article.createdAt).format('MMM D, YYYY')}<FaHeart />{article.likes}
+                    {moment(article.createdAt).format('MMM D, YYYY')}<FaHeart />{article.likes.length}
                   </span>
                 </div>
               </article>
@@ -131,7 +61,7 @@ const Homepage = () => {
                   <span>
                     <a href="#">{article.author.firstName} {article.author.lastName}</a> in <a>{article.category}</a>
                     <br />
-                    {moment(article.createdAt).format('MMM D, YYYY')}<FaHeart />{article.likes}
+                    {moment(article.createdAt).format('MMM D, YYYY')}<FaHeart />{article.likes.length}
                   </span>
                 </div>
               </article>
@@ -145,11 +75,11 @@ const Homepage = () => {
                 <a href="#">
                   <h1>{article.title}</h1>
                 </a>
-                <p>{posts[0].text.slice(0, 100)}...</p>
+                <p>{article.text.slice(0, 100)}...</p>
                 <span>
                   <a href="#">{article.author.firstName} {article.author.lastName}</a> in <a>{article.category}</a>
                   <br />
-                  {moment(article.createdAt).format('MMM D, YYYY')}<FaHeart />{article.likes}
+                  {moment(article.createdAt).format('MMM D, YYYY')}<FaHeart />{article.likes.length}
                 </span>
               </div>
               <div className="img"></div>
@@ -168,7 +98,7 @@ const Homepage = () => {
                 <span>
                   <a href="#">{article.author.firstName} {article.author.lastName}</a> in <a>{article.category}</a>
                   <br />
-                  {moment(article.createdAt).format('MMM D, YYYY')}<FaHeart />{article.likes}
+                  {moment(article.createdAt).format('MMM D, YYYY')}<FaHeart />{article.likes.length}
                 </span>
               </div>
             </article>

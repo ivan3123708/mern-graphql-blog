@@ -6,7 +6,7 @@ const Query = {
     return prisma.users();
   },
   posts(parent, args, { prisma }) {
-    return prisma.posts();
+    return prisma.posts({ ...args });
   },
   comments(parent, args, { prisma }) {
     return prisma.comments();
