@@ -27,6 +27,7 @@ type User {
   password: String!
   posts: [Post!]!
   comments: [Comment!]!
+  following: [User!]!
   likes: [Post!]!
   createdAt: String!
 }

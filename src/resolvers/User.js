@@ -5,6 +5,9 @@ const User = {
   comments(parent, args, { prisma }) {
     return prisma.user({ id: parent.id }).comments();
   },
+  following(parent, args, { prisma }) {
+    return prisma.user({ id: parent.id }).following();
+  },
   likes(parent, args, { prisma }) {
     return prisma.user({ id: parent.id }).likes();
   }

@@ -6,6 +6,7 @@ type User {
   password: String!
   posts: [Post!]! @relation(name: "UserPosts", link: INLINE)
   comments: [Comment!]! @relation(name: "UserComments", link: INLINE)
+  following: [User!]! @relation(name: "UserFollowing", link: INLINE)
   likes: [Post!]! @relation(name: "UserLikes", link: INLINE)
   createdAt: DateTime @createdAt
   updatedAt: DateTime @updatedAt
