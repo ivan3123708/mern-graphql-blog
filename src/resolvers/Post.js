@@ -4,6 +4,9 @@ const Post = {
   },
   comments(parent, args, { prisma }) {
     return prisma.post({ id: parent.id }).comments();
+  },
+  likes(parent, args, { prisma }) {
+    return prisma.post({ id: parent.id }).likes();
   }
 }
 

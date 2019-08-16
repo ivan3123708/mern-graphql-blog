@@ -4,6 +4,9 @@ const User = {
   },
   comments(parent, args, { prisma }) {
     return prisma.user({ id: parent.id }).comments();
+  },
+  likes(parent, args, { prisma }) {
+    return prisma.user({ id: parent.id }).likes();
   }
 }
 

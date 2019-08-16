@@ -70,6 +70,7 @@ const Mutation = {
     const post = await prisma.createPost({
       title: args.data.title,
       text: args.data.text,
+      category: args.data.category,
       author: {
         connect: {
           id: userId
