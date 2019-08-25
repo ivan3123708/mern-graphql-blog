@@ -1,0 +1,105 @@
+.post {
+  min-height: 100vh;
+
+  &-container {
+    width: 100%;
+    margin: auto;
+    padding-top: 75px;
+  }
+
+  &__info {
+     &-container {
+      width: 50%;
+      margin: auto;
+    }
+
+    h2 {
+        font-size: 16px;
+        font-weight: 100;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+      }
+      
+      h1 {
+        margin: 15px 0;
+        font-size: 40px;
+      }
+
+      span {
+        display: inline-block;
+        margin: 2px 0;
+
+        > a {
+          color: $green;
+        }
+
+        > svg {
+          height: 12px;
+          margin: 0 4px;
+          color: $pink;
+        }
+      }
+
+      &__author {
+        display: flex;
+        
+        span:nth-child(2) {
+          margin-left: 10px;
+        }
+      }
+  }
+
+  &__image {
+    width: 100%;
+    margin: 50px 0;
+
+    .img {
+      width: 100%;
+      height: 300px;
+      background-color: #9bd2e2;
+    }
+  }
+
+  &__text {
+    &-container {
+      width: 50%;
+      margin: auto;
+    }
+
+    p {
+      font-size: 21px;
+      font-weight: 100;
+      line-height: 1.60;
+    }
+  }
+
+  &__comments {
+    padding: 40px 0;
+    background-color: #f7f7f7;
+
+    &-container {
+      width: 50%;
+      margin: auto;
+    }
+
+    &__header {
+      margin-bottom: 20px;
+      font-size: 16px;
+      font-weight: 600;
+    }
+
+    &__create {
+      padding: 20px;
+      background-color: #ffffff;
+      border: 1px solid $border;
+      border-radius: 3px;
+
+      textarea {
+        width: 100%;
+        height: 150px;
+        margin: 20px 0;
+        font-size: 16px;
+      }
+    }
+  }
+}

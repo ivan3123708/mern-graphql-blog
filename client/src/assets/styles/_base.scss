@@ -23,3 +23,10 @@ input {
 input:focus {
   border: 1px solid $green;
 }
+
+textarea {
+  color: $text;
+  border: none;
+  outline: none;
+  resize: none;
+}

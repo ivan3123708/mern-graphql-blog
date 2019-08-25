@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { useQuery } from '@apollo/react-hooks';
 import { GET_LATEST_POSTS, GET_POPULAR_POSTS } from '../../queries/queries';
 import moment from 'moment';
@@ -16,15 +17,15 @@ const Homepage = () => {
 
   return (
     <div className="homepage">
-      <div className="homepage__container">
-        <div className="homepage__latest">
+      <div className="homepage-container">
+        <section className="homepage__latest">
           <div>
             {latestPosts.length && <article className="homepage__latest__post-big">
               <div className="img"></div>
               <div className="text">
-                <a href="#">
+                <Link to={`/posts/${latestPosts[0].id}`}>
                   <h1>{latestPosts[0].title}</h1>
-                </a>
+                </Link>
                 <p>{latestPosts[0].text.slice(0, 100)}...</p>
                 <span>
                   <a>{latestPosts[0].author.firstName} {latestPosts[0].author.lastName}</a> in <a>{latestPosts[0].category}</a>
@@ -35,41 +36,41 @@ const Homepage = () => {
             </article>}
           </div>
           <div>
-            {latestPosts.slice(1, 4).map((article) => (
+            {latestPosts.slice(1, 4).map((post) => (
               <article className="homepage__latest__post">
                 <div className="img"></div>
                 <div className="text">
-                  <a href="#">
-                    <h1>{article.title}</h1>
-                  </a>
+                  <Link to={`/posts/${post.id}`}>
+                    <h1>{post.title}</h1>
+                  </Link>
                   <span>
-                    <a href="#">{article.author.firstName} {article.author.lastName}</a> in <a>{article.category}</a>
+                    <a href="#">{post.author.firstName} {post.author.lastName}</a> in <a>{post.category}</a>
                     <br />
-                    {moment(article.createdAt).format('MMM D, YYYY')}<FaHeart />{article.likes}
+                    {moment(post.createdAt).format('MMM D, YYYY')}<FaHeart />{post.likes}
                   </span>
                 </div>
               </article>
             ))}
           </div>
           <div>
-            {latestPosts.slice(4, 7).map((article) => (
+            {latestPosts.slice(4, 7).map((post) => (
               <article className="homepage__latest__post">
                 <div className="img"></div>
                 <div className="text">
-                  <a href="#">
-                    <h1>{article.title}</h1>
-                  </a>
+                  <Link to={`/posts/${post.id}`}>
+                    <h1>{post.title}</h1>
+                  </Link>
                   <span>
-                    <a href="#">{article.author.firstName} {article.author.lastName}</a> in <a>{article.category}</a>
+                    <a href="#">{post.author.firstName} {post.author.lastName}</a> in <a>{post.category}</a>
                     <br />
-                    {moment(article.createdAt).format('MMM D, YYYY')}<FaHeart />{article.likes}
+                    {moment(post.createdAt).format('MMM D, YYYY')}<FaHeart />{post.likes}
                   </span>
                 </div>
               </article>
             ))}
           </div>
-        </div>
-        <div className="homepage__following">
+        </section>
+        <section className="homepage__following">
           {/*followingPosts.map((article) => (
             <article className="homepage__following__post">
               <div className="text">
@@ -86,25 +87,25 @@ const Homepage = () => {
               <div className="img"></div>
             </article>
           ))*/}
-        </div>
-        <div className="homepage__popular">
+        </section>
+        <aside className="homepage__popular">
           <h1>POPULAR</h1>
-          {popularPosts.slice(0, 4).map((article) => (
+          {popularPosts.slice(0, 4).map((post) => (
             <article className="homepage__popular__post">
               <div className="img"></div>
               <div className="text">
-                <a href="#">
-                  <h1>{article.title}</h1>
-                </a>
+                <Link to={`/posts/${post.id}`}>
+                  <h1>{post.title}</h1>
+                </Link>
                 <span>
-                  <a href="#">{article.author.firstName} {article.author.lastName}</a> in <a>{article.category}</a>
+                  <a href="#">{post.author.firstName} {post.author.lastName}</a> in <a>{post.category}</a>
                   <br />
-                  {moment(article.createdAt).format('MMM D, YYYY')}<FaHeart />{article.likes}
+                  {moment(post.createdAt).format('MMM D, YYYY')}<FaHeart />{post.likes}
                 </span>
               </div>
             </article>
           ))}
-        </div>
+        </aside>
       </div>
     </div>
   )
