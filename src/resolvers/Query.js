@@ -5,6 +5,9 @@ const Query = {
   users(parent, args, { prisma }) {
     return prisma.users();
   },
+  post(parent, args, { prisma }) {
+    return prisma.post({ id: args.id });
+  },
   posts(parent, args, { prisma }) {
     return prisma.posts({ ...args });
   },

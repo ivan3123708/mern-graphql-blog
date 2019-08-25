@@ -3,7 +3,7 @@
 type Query {
   user(email: String!): User
   users: [User!]!
-  post: Post
+  post(id: ID!): Post
   posts(first: Int, skip: Int, orderBy: PostOrderByInput): [Post!]!
   comments: [Comment!]!
 }
