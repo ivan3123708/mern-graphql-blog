@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import LoginModal from './LoginModal';
 import SignupModal from './SignupModal';
 
@@ -19,7 +20,9 @@ const Header = () => {
   return (
     <header className="header">
       <div className="header__container">
-        <span className="header__title">BLOG</span>
+        <span className="header__title">
+          <Link to="/">BLOG</Link>
+        </span>
         {token ?
           <div className="header__right">
             <a className="btn-outline" onClick={logout}>Logout</a>

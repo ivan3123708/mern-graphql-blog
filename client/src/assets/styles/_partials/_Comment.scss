@@ -1,0 +1,37 @@
+.comment {
+  margin-bottom: 10px;
+  padding: 20px;
+  background-color: #ffffff;
+  border: 1px solid $border;
+  border-radius: 3px;
+
+  &__author {
+    display: flex;
+
+    .img {
+      width: 50px;
+      height: 50px;
+      background-color: #9bd2e2;
+      border-radius: 50%;
+    }
+
+    span {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      width: 100px;
+      margin-left: 10px;
+
+      a {
+        color: $green;
+      }
+    }
+  }
+
+  &__text {
+    p {
+      margin: 20px 0 5px;
+      font-size: 18px;
+    }
+  }
+}

@@ -4,6 +4,7 @@ import { GET_POST } from '../../queries/queries';
 import { CREATE_COMMENT } from '../../queries/mutations';
 import moment from 'moment';
 import { FaHeart } from 'react-icons/fa';
+import Comment from '../partials/Comment';
 
 const Post = (props) => {
   const id = props.match.params.id;
@@ -79,13 +80,7 @@ const Post = (props) => {
               </form>
             </div>
             <div className="post__comments__list">
-              {post.comments.map((comment) => (
-                <div>
-                  <h1>{comment.text}</h1>
-                  <h1>{comment.author.firstName}</h1>
-                  <h1>{comment.createdAt}</h1>
-                </div>
-              ))}
+              {post.comments.map((comment) => <Comment comment={comment} />)}
             </div>
           </div>
         </section>
