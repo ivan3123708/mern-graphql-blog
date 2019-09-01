@@ -4,7 +4,7 @@ import { SIGNUP } from '../../queries/mutations';
 import Modal from './Modal';
 import { MdClose } from 'react-icons/md';
 
-const SignupModal = ({ setShowModal, setToken }) => {
+const SignupModal = ({ setShowModal, setToken, setUser }) => {
   const [signup, { loading, error }] = useMutation(SIGNUP);
 
   const signupUser = (e) => {
@@ -26,10 +26,12 @@ const SignupModal = ({ setShowModal, setToken }) => {
       }
     }).then((res) => {
       const authToken = res.data.createUser.token;
+      const { id, firstName, lastName } = res.data.createUser.user;
 
       localStorage.setItem('authToken', authToken);
 
       setToken(authToken);
+      setUser({ id, firstName, lastName });
       setShowModal(false);
     });
   }

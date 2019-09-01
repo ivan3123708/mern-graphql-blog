@@ -1,7 +1,7 @@
 # import PostOrderByInput from '../prisma/generated/prisma-client/prisma.graphql';
 
 type Query {
-  user(email: String!): User
+  user: User
   users: [User!]!
   post(id: ID!): Post
   posts(first: Int, skip: Int, orderBy: PostOrderByInput): [Post!]!

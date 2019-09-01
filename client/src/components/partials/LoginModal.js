@@ -4,7 +4,7 @@ import { LOGIN } from '../../queries/mutations';
 import Modal from './Modal';
 import { MdClose } from 'react-icons/md';
 
-const LoginModal = ({ setShowModal, setToken }) => {
+const LoginModal = ({ setShowModal, setToken, setUser }) => {
   const [login, { loading, error }] = useMutation(LOGIN);
 
   const loginUser = (e) => {
@@ -22,10 +22,12 @@ const LoginModal = ({ setShowModal, setToken }) => {
       }
     }).then((res) => {
       const authToken = res.data.login.token;
+      const { id, firstName, lastName } = res.data.login.user;
 
       localStorage.setItem('authToken', authToken);
 
       setToken(authToken);
+      setUser({ id, firstName, lastName });
       setShowModal(false);
     });
   }

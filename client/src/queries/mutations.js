@@ -4,7 +4,9 @@ export const LOGIN = gql`
   mutation login($data: LoginUserInput!) {
     login(data: $data) {
       user {
+        id
         firstName
+        lastName
       }
       token
     }
@@ -15,6 +17,7 @@ export const SIGNUP = gql`
   mutation createUser($data: CreateUserInput!) {
     createUser(data: $data) {
       user {
+        id
         firstName
         lastName
       }

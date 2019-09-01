@@ -56,7 +56,7 @@
     .img {
       width: 100%;
       height: 300px;
-      background-color: #9bd2e2;
+      background-color: $blue;
     }
   }
 
@@ -100,6 +100,17 @@
         height: 150px;
         margin: 20px 0;
         font-size: 16px;
+      }
+
+      #write-comment {
+        display: flex;
+        cursor: pointer;
+
+        > svg {
+          height: 20px;
+          margin-right: 10px;
+          color: $blue;
+        }
       }
     }
   }

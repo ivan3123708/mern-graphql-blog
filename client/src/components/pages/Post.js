@@ -1,13 +1,17 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { useQuery, useMutation } from '@apollo/react-hooks';
 import { GET_POST } from '../../queries/queries';
 import { CREATE_COMMENT } from '../../queries/mutations';
 import moment from 'moment';
-import { FaHeart } from 'react-icons/fa';
+import { FaHeart, FaComment } from 'react-icons/fa';
+import { UserContext, ModalContext } from '../../context';
 import Comment from '../partials/Comment';
 
 const Post = (props) => {
   const id = props.match.params.id;
+
+  const { user } = useContext(UserContext);
+  const { setShowModal } = useContext(ModalContext);
 
   const { loading, data: { post }, refetch } = useQuery(GET_POST, {
     variables: {
@@ -69,16 +73,21 @@ const Post = (props) => {
         <section className="post__comments">
           <div className="post__comments-container">
             <header className="post__comments__header">Comments</header>
-            <div className="post__comments__create">
-              <div>
-                <div className="img"></div>
-                <a href="#">Ivan Jakimovski</a>
+            {user ?
+              <div className="post__comments__create">
+                <div>
+                  <div className="img"></div>
+                  <a href="#">{user.firstName} {user.lastName}</a>
+                </div>
+                <form onSubmit={submitComment}>
+                  <textarea name="comment"></textarea>
+                  <button type="submit" className="btn-outline">Publish</button>
+                </form>
+              </div> :
+              <div className="post__comments__create">
+                <span id="write-comment" onClick={() => setShowModal('signup')}><FaComment /><span>Write a comment...</span></span>
               </div>
-              <form onSubmit={submitComment}>
-                <textarea name="comment"></textarea>
-                <button type="submit" className="btn-outline">Publish</button>
-              </form>
-            </div>
+            }
             <div className="post__comments__list">
               {post.comments.map((comment) => <Comment comment={comment} />)}
             </div>

@@ -1,20 +1,27 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Link } from 'react-router-dom';
+import { useQuery } from '@apollo/react-hooks';
+import { GET_USER } from '../../queries/queries';
+import { UserContext, ModalContext } from '../../context';
 import LoginModal from './LoginModal';
 import SignupModal from './SignupModal';
 
 const Header = () => {
-  const [showModal, setShowModal] = useState(false);
+  const { data } = useQuery(GET_USER);
+  const { setUser } = useContext(UserContext);
+  const { showModal, setShowModal } = useContext(ModalContext);
   const [token, setToken] = useState(localStorage.getItem('authToken'));
 
   useEffect(() => {
     setToken(localStorage.getItem('authToken'));
-  }, [token]);
+    setUser(data ? data.user : null);
+  }, [token, data]);
 
   const logout = () => {
     localStorage.removeItem('authToken');
 
     setToken(null);
+    setUser(null);
   }
 
   return (
@@ -38,10 +45,12 @@ const Header = () => {
           <LoginModal
             setShowModal={setShowModal}
             setToken={setToken}
+            setUser={setUser}
           /> :
           <SignupModal
             setShowModal={setShowModal}
             setToken={setToken}
+            setUser={setUser}
           /> :
         null
       }

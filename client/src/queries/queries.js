@@ -1,5 +1,14 @@
 import { gql } from 'apollo-boost';
 
+export const GET_USER = gql`
+  query getUser {
+    user {
+      firstName
+      lastName
+    }
+  }
+`;
+
 export const GET_POST = gql`
   query getPost($id: ID!) {
     post(id: $id) {

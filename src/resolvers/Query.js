@@ -1,6 +1,6 @@
 const Query = {
-  user(parent, args, { prisma }) {
-    return prisma.user({ email: args.email });
+  user(parent, args, { userId, prisma }) {
+    return prisma.user({ id: userId });
   },
   users(parent, args, { prisma }) {
     return prisma.users();
