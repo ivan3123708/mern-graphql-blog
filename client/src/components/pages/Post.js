@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useEffect, useContext, useRef } from 'react';
 import { useQuery, useMutation } from '@apollo/react-hooks';
 import { GET_POST } from '../../queries/queries';
 import { CREATE_COMMENT } from '../../queries/mutations';
@@ -12,6 +12,9 @@ const Post = (props) => {
 
   const { user } = useContext(UserContext);
   const { setShowModal } = useContext(ModalContext);
+  const aside = useRef(null);
+  const postText = useRef(null);
+  const commentSection = useRef(null);
 
   const { loading, data: { post }, refetch } = useQuery(GET_POST, {
     variables: {
@@ -20,6 +23,16 @@ const Post = (props) => {
   });
 
   const [createComment] = useMutation(CREATE_COMMENT);
+
+  useEffect(() => {
+    window.addEventListener('scroll', () => {
+      if (window.pageYOffset + 190 > postText.current.offsetTop && window.pageYOffset + 360 < commentSection.current.offsetTop) {
+        aside.current.style.display = 'block';
+      } else {
+        aside.current.style.display = 'none';
+      }
+    }, true);
+  }, []);
 
   const submitComment = (e) => {
     e.preventDefault();
@@ -47,7 +60,19 @@ const Post = (props) => {
   return (
     <div className="post">
       <div className="post-container">
-        <section className="post__info">
+        <section className="post__info wrapper">
+          <aside className="no" ref={aside}>
+            <span>
+              <a>{post.author.firstName} {post.author.lastName}</a>
+            </span>
+            <span>
+              <a className="btn-outline-small">Follow</a>
+            </span>
+            <br/>
+            <span>
+              <FaHeart /><span>{post.likes}</span>
+            </span>
+          </aside>
           <div className="post__info-container">
             <h2>{post.category}</h2>
             <h1>{post.title}</h1>
@@ -65,12 +90,12 @@ const Post = (props) => {
         <figure className="post__image">
           <div className="img"></div>
         </figure>
-        <section className="post__text">
+        <section className="post__text wrapper" ref={postText}>
           <div className="post__text-container">
             <p>{post.text}</p>
           </div>
         </section>
-        <section className="post__comments">
+        <section className="post__comments" ref={commentSection}>
           <div className="post__comments-container">
             <header className="post__comments__header">Comments</header>
             {user ?
