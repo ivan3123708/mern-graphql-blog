@@ -1,9 +1,9 @@
 import React, { useEffect, useContext, useRef } from 'react';
 import { useQuery, useMutation } from '@apollo/react-hooks';
 import { GET_POST } from '../../queries/queries';
-import { CREATE_COMMENT } from '../../queries/mutations';
+import { CREATE_COMMENT, LIKE_POST } from '../../queries/mutations';
 import moment from 'moment';
-import { FaHeart, FaComment } from 'react-icons/fa';
+import { FaHeart, FaRegHeart, FaComment } from 'react-icons/fa';
 import { UserContext, ModalContext } from '../../context';
 import Comment from '../partials/Comment';
 
@@ -23,16 +23,31 @@ const Post = (props) => {
   });
 
   const [createComment] = useMutation(CREATE_COMMENT);
+  const [likePost] = useMutation(LIKE_POST);
+
+  const liked = post && !!post.likedBy.find((user) => user.id === user.id);
 
   useEffect(() => {
     window.addEventListener('scroll', () => {
-      if (window.pageYOffset + 190 > postText.current.offsetTop && window.pageYOffset + 360 < commentSection.current.offsetTop) {
-        aside.current.style.display = 'block';
-      } else {
-        aside.current.style.display = 'none';
-      }
+      try {
+        if (window.pageYOffset + 190 > postText.current.offsetTop && window.pageYOffset + 360 < commentSection.current.offsetTop) {
+          aside.current.style.display = 'block';
+        } else {
+          aside.current.style.display = 'none';
+        }
+      } catch (e) {}
     }, true);
   }, []);
+
+  const onLikePost = () => {
+    likePost({
+      variables: {
+        id: post.id
+      }
+    }).then(() => {
+      refetch();
+    });
+  }
 
   const submitComment = (e) => {
     e.preventDefault();
@@ -70,7 +85,7 @@ const Post = (props) => {
             </span>
             <br/>
             <span>
-              <FaHeart /><span>{post.likes}</span>
+              {liked ? <FaHeart onClick={onLikePost} /> : <FaRegHeart onClick={onLikePost} />}<span>{post.likes}</span>
             </span>
           </aside>
           <div className="post__info-container">

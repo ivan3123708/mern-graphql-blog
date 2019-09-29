@@ -3,6 +3,7 @@ import { gql } from 'apollo-boost';
 export const GET_USER = gql`
   query getUser {
     user {
+      id
       firstName
       lastName
     }
@@ -29,6 +30,11 @@ export const GET_POST = gql`
         createdAt
       }
       likes
+      likedBy {
+        id
+        firstName
+        lastName
+      }
       createdAt
     }
   }

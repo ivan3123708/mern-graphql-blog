@@ -33,3 +33,11 @@ export const CREATE_COMMENT = gql`
     }
   }
 `;
+
+export const LIKE_POST = gql`
+  mutation likePost($id: ID!) {
+    likePost(id: $id) {
+      likes
+    }
+  }
+`;
