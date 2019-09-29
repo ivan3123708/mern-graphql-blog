@@ -174,6 +174,74 @@ const Mutation = {
     });
 
     return comment;
+  },
+  async likePost(parent, args, { userId, prisma }) {
+    if (!userId) {
+      throw new Error('You must be logged in');
+    }
+
+    let post;
+    const likedBy = await prisma.post({ id: args.id }).likedBy();
+    const likes = await prisma.post({ id: args.id }).likes();
+    const action = likedBy.find((user) => user.id === userId) ? 'UNLIKE' : 'LIKE';
+
+    if (action === 'LIKE') {
+      post = await prisma.updatePost({
+        data: {
+          likes: likes + 1,
+          likedBy: {
+            connect: {
+              id: userId
+            }
+          }
+        },
+        where: {
+          id: args.id
+        }
+      });
+
+      await prisma.updateUser({
+        data: {
+          likedPosts: {
+            connect: {
+              id: args.id
+            }
+          }
+        },
+        where: {
+          id: userId
+        }
+      });
+    } else if (action === 'UNLIKE') {
+      post = await prisma.updatePost({
+        data: {
+          likes: likes - 1,
+          likedBy: {
+            disconnect: {
+              id: userId
+            }
+          }
+        },
+        where: {
+          id: args.id
+        }
+      });
+
+      await prisma.updateUser({
+        data: {
+          likedPosts: {
+            disconnect: {
+              id: args.id
+            }
+          }
+        },
+        where: {
+          id: userId
+        }
+      });
+    }
+
+    return post;
   }
 }
 
