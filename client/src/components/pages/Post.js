@@ -1,7 +1,7 @@
 import React, { useEffect, useContext, useRef } from 'react';
 import { useQuery, useMutation } from '@apollo/react-hooks';
 import { GET_POST } from '../../queries/queries';
-import { CREATE_COMMENT, LIKE_POST } from '../../queries/mutations';
+import { CREATE_COMMENT, FOLLOW_USER, LIKE_POST } from '../../queries/mutations';
 import moment from 'moment';
 import { FaHeart, FaRegHeart, FaComment } from 'react-icons/fa';
 import { UserContext, ModalContext } from '../../context';
@@ -23,9 +23,18 @@ const Post = (props) => {
   });
 
   const [createComment] = useMutation(CREATE_COMMENT);
+  const [followUser] = useMutation(FOLLOW_USER);
   const [likePost] = useMutation(LIKE_POST);
 
-  const liked = post && !!post.likedBy.find((user) => user.id === user.id);
+  let likedPost;
+  let ownPost;
+  let followingUser;
+
+  if (user && post) {
+    likedPost = !!post.likedBy.find((n) => n.id === user.id);
+    ownPost = post.author.id === user.id;
+    followingUser = post.author.followers.find((n) => n.id === user.id)
+  }
 
   useEffect(() => {
     window.addEventListener('scroll', () => {
@@ -39,14 +48,20 @@ const Post = (props) => {
     }, true);
   }, []);
 
+  const onFollow = () => {
+    followUser({
+      variables: {
+        id: post.author.id
+      }
+    }).then(() => refetch());
+  }
+
   const onLikePost = () => {
     likePost({
       variables: {
         id: post.id
       }
-    }).then(() => {
-      refetch();
-    });
+    }).then(() => refetch());
   }
 
   const submitComment = (e) => {
@@ -76,18 +91,21 @@ const Post = (props) => {
     <div className="post">
       <div className="post-container">
         <section className="post__info wrapper">
-          <aside className="no" ref={aside}>
+          {!ownPost && <aside ref={aside}>
             <span>
               <a>{post.author.firstName} {post.author.lastName}</a>
             </span>
             <span>
-              <a className="btn-outline-small">Follow</a>
+              {followingUser ?
+                <a className="btn-outline-small solid" onClick={onFollow}>Following</a> :
+                <a className="btn-outline-small" onClick={onFollow}>Follow</a>
+              }
             </span>
             <br/>
             <span>
-              {liked ? <FaHeart onClick={onLikePost} /> : <FaRegHeart onClick={onLikePost} />}<span>{post.likes}</span>
+              {likedPost ? <FaHeart onClick={onLikePost} /> : <FaRegHeart onClick={onLikePost} />}<span>{post.likes}</span>
             </span>
-          </aside>
+          </aside>}
           <div className="post__info-container">
             <h2>{post.category}</h2>
             <h1>{post.title}</h1>
@@ -96,7 +114,11 @@ const Post = (props) => {
                 <a>{post.author.firstName} {post.author.lastName}</a>
               </span>
               <span>
-                <a className="btn-outline-small">Follow</a>
+                {!ownPost &&
+                  followingUser ?
+                    <a className="btn-outline-small solid" onClick={onFollow}>Following</a> :
+                    <a className="btn-outline-small" onClick={onFollow}>Follow</a>
+                }
               </span>
             </div>
             <span>{moment(post.createdAt).format('MMM D, YYYY')}<FaHeart />{post.likes}</span>

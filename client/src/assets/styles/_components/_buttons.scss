@@ -1,16 +1,16 @@
 .btn-outline {
   display: table;
   padding: 6px 16px;
-  color: #03a87c;
-  border: 1px solid #03a87c;
+  color: $green;
+  border: 1px solid $green;
   border-radius: 4px;
   font-size: 16px;
   text-decoration: none;
   cursor: pointer;
 
   &:disabled {
-    color: #03a87c63;
-    border: 1px solid #03a87c63;
+    color: $green-disabled;
+    border: 1px solid $green-disabled;
     cursor: wait;
   }
 }
@@ -18,4 +18,11 @@
 .btn-outline-small {
   @extend .btn-outline;
   padding: 0 8px;
+  line-height: 23px;
+}
+
+.btn-outline-small.solid {
+  @extend .btn-outline-small;
+  color: white;
+  background-color: $green;
 }

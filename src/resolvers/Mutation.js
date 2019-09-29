@@ -51,6 +51,71 @@ const Mutation = {
 
     return user;
   },
+  async followUser(parent, args, { userId, prisma }) {
+    if (!userId) {
+      throw new Error('You must be logged in');
+    }
+
+    let user;
+    const following = await prisma.user({ id: userId }).following();
+    const action = following.find((user) => user.id === args.id) ? 'UNFOLLOW' : 'FOLLOW';
+
+    if (action === 'FOLLOW') {
+      user = await prisma.updateUser({
+        data: {
+          following: {
+            connect: {
+              id: args.id
+            }
+          }
+        },
+        where: {
+          id: userId
+        }
+      });
+
+      await prisma.updateUser({
+        data: {
+          followers: {
+            connect: {
+              id: userId
+            }
+          }
+        },
+        where: {
+          id: args.id
+        }
+      });
+    } else if (action === 'UNFOLLOW') {
+      user = await prisma.updateUser({
+        data: {
+          following: {
+            disconnect: {
+              id: args.id
+            }
+          }
+        },
+        where: {
+          id: userId
+        }
+      });
+
+      await prisma.updateUser({
+        data: {
+          followers: {
+            disconnect: {
+              id: userId
+            }
+          }
+        },
+        where: {
+          id: args.id
+        }
+      });
+    }
+
+    return user;
+  },
   async deleteUser(parent, args, { userId, prisma }) {
     if (!userId) {
       throw new Error('You must be logged in');
@@ -97,6 +162,74 @@ const Mutation = {
         id: args.id
       }
     });
+
+    return post;
+  },
+  async likePost(parent, args, { userId, prisma }) {
+    if (!userId) {
+      throw new Error('You must be logged in');
+    }
+
+    let post;
+    const likedBy = await prisma.post({ id: args.id }).likedBy();
+    const likes = await prisma.post({ id: args.id }).likes();
+    const action = likedBy.find((user) => user.id === userId) ? 'UNLIKE' : 'LIKE';
+
+    if (action === 'LIKE') {
+      post = await prisma.updatePost({
+        data: {
+          likes: likes + 1,
+          likedBy: {
+            connect: {
+              id: userId
+            }
+          }
+        },
+        where: {
+          id: args.id
+        }
+      });
+
+      await prisma.updateUser({
+        data: {
+          likedPosts: {
+            connect: {
+              id: args.id
+            }
+          }
+        },
+        where: {
+          id: userId
+        }
+      });
+    } else if (action === 'UNLIKE') {
+      post = await prisma.updatePost({
+        data: {
+          likes: likes - 1,
+          likedBy: {
+            disconnect: {
+              id: userId
+            }
+          }
+        },
+        where: {
+          id: args.id
+        }
+      });
+
+      await prisma.updateUser({
+        data: {
+          likedPosts: {
+            disconnect: {
+              id: args.id
+            }
+          }
+        },
+        where: {
+          id: userId
+        }
+      });
+    }
 
     return post;
   },
@@ -174,74 +307,6 @@ const Mutation = {
     });
 
     return comment;
-  },
-  async likePost(parent, args, { userId, prisma }) {
-    if (!userId) {
-      throw new Error('You must be logged in');
-    }
-
-    let post;
-    const likedBy = await prisma.post({ id: args.id }).likedBy();
-    const likes = await prisma.post({ id: args.id }).likes();
-    const action = likedBy.find((user) => user.id === userId) ? 'UNLIKE' : 'LIKE';
-
-    if (action === 'LIKE') {
-      post = await prisma.updatePost({
-        data: {
-          likes: likes + 1,
-          likedBy: {
-            connect: {
-              id: userId
-            }
-          }
-        },
-        where: {
-          id: args.id
-        }
-      });
-
-      await prisma.updateUser({
-        data: {
-          likedPosts: {
-            connect: {
-              id: args.id
-            }
-          }
-        },
-        where: {
-          id: userId
-        }
-      });
-    } else if (action === 'UNLIKE') {
-      post = await prisma.updatePost({
-        data: {
-          likes: likes - 1,
-          likedBy: {
-            disconnect: {
-              id: userId
-            }
-          }
-        },
-        where: {
-          id: args.id
-        }
-      });
-
-      await prisma.updateUser({
-        data: {
-          likedPosts: {
-            disconnect: {
-              id: args.id
-            }
-          }
-        },
-        where: {
-          id: userId
-        }
-      });
-    }
-
-    return post;
   }
 }
 

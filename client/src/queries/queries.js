@@ -18,8 +18,12 @@ export const GET_POST = gql`
       text
       category
       author {
+        id
         firstName
         lastName
+        followers {
+          id
+        }
       }
       comments {
         text

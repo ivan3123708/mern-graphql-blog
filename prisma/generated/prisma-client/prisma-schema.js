@@ -756,6 +756,7 @@ type User {
   posts(where: PostWhereInput, orderBy: PostOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Post!]
   comments(where: CommentWhereInput, orderBy: CommentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Comment!]
   following(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User!]
+  followers(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User!]
   likedPosts(where: PostWhereInput, orderBy: PostOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Post!]
   createdAt: DateTime
   updatedAt: DateTime
@@ -776,11 +777,17 @@ input UserCreateInput {
   posts: PostCreateManyWithoutAuthorInput
   comments: CommentCreateManyWithoutAuthorInput
   following: UserCreateManyWithoutFollowingInput
+  followers: UserCreateManyWithoutFollowersInput
   likedPosts: PostCreateManyInput
 }
 
 input UserCreateManyInput {
   create: [UserCreateInput!]
+  connect: [UserWhereUniqueInput!]
+}
+
+input UserCreateManyWithoutFollowersInput {
+  create: [UserCreateWithoutFollowersInput!]
   connect: [UserWhereUniqueInput!]
 }
 
@@ -807,6 +814,19 @@ input UserCreateWithoutCommentsInput {
   password: String!
   posts: PostCreateManyWithoutAuthorInput
   following: UserCreateManyWithoutFollowingInput
+  followers: UserCreateManyWithoutFollowersInput
+  likedPosts: PostCreateManyInput
+}
+
+input UserCreateWithoutFollowersInput {
+  id: ID
+  firstName: String!
+  lastName: String!
+  email: String!
+  password: String!
+  posts: PostCreateManyWithoutAuthorInput
+  comments: CommentCreateManyWithoutAuthorInput
+  following: UserCreateManyWithoutFollowingInput
   likedPosts: PostCreateManyInput
 }
 
@@ -818,6 +838,7 @@ input UserCreateWithoutFollowingInput {
   password: String!
   posts: PostCreateManyWithoutAuthorInput
   comments: CommentCreateManyWithoutAuthorInput
+  followers: UserCreateManyWithoutFollowersInput
   likedPosts: PostCreateManyInput
 }
 
@@ -829,6 +850,7 @@ input UserCreateWithoutPostsInput {
   password: String!
   comments: CommentCreateManyWithoutAuthorInput
   following: UserCreateManyWithoutFollowingInput
+  followers: UserCreateManyWithoutFollowersInput
   likedPosts: PostCreateManyInput
 }
 
@@ -980,6 +1002,7 @@ input UserUpdateDataInput {
   posts: PostUpdateManyWithoutAuthorInput
   comments: CommentUpdateManyWithoutAuthorInput
   following: UserUpdateManyWithoutFollowingInput
+  followers: UserUpdateManyWithoutFollowersInput
   likedPosts: PostUpdateManyInput
 }
 
@@ -991,6 +1014,7 @@ input UserUpdateInput {
   posts: PostUpdateManyWithoutAuthorInput
   comments: CommentUpdateManyWithoutAuthorInput
   following: UserUpdateManyWithoutFollowingInput
+  followers: UserUpdateManyWithoutFollowersInput
   likedPosts: PostUpdateManyInput
 }
 
@@ -1018,6 +1042,18 @@ input UserUpdateManyMutationInput {
   lastName: String
   email: String
   password: String
+}
+
+input UserUpdateManyWithoutFollowersInput {
+  create: [UserCreateWithoutFollowersInput!]
+  delete: [UserWhereUniqueInput!]
+  connect: [UserWhereUniqueInput!]
+  set: [UserWhereUniqueInput!]
+  disconnect: [UserWhereUniqueInput!]
+  update: [UserUpdateWithWhereUniqueWithoutFollowersInput!]
+  upsert: [UserUpsertWithWhereUniqueWithoutFollowersInput!]
+  deleteMany: [UserScalarWhereInput!]
+  updateMany: [UserUpdateManyWithWhereNestedInput!]
 }
 
 input UserUpdateManyWithoutFollowingInput {
@@ -1058,6 +1094,18 @@ input UserUpdateWithoutCommentsDataInput {
   password: String
   posts: PostUpdateManyWithoutAuthorInput
   following: UserUpdateManyWithoutFollowingInput
+  followers: UserUpdateManyWithoutFollowersInput
+  likedPosts: PostUpdateManyInput
+}
+
+input UserUpdateWithoutFollowersDataInput {
+  firstName: String
+  lastName: String
+  email: String
+  password: String
+  posts: PostUpdateManyWithoutAuthorInput
+  comments: CommentUpdateManyWithoutAuthorInput
+  following: UserUpdateManyWithoutFollowingInput
   likedPosts: PostUpdateManyInput
 }
 
@@ -1068,6 +1116,7 @@ input UserUpdateWithoutFollowingDataInput {
   password: String
   posts: PostUpdateManyWithoutAuthorInput
   comments: CommentUpdateManyWithoutAuthorInput
+  followers: UserUpdateManyWithoutFollowersInput
   likedPosts: PostUpdateManyInput
 }
 
@@ -1078,12 +1127,18 @@ input UserUpdateWithoutPostsDataInput {
   password: String
   comments: CommentUpdateManyWithoutAuthorInput
   following: UserUpdateManyWithoutFollowingInput
+  followers: UserUpdateManyWithoutFollowersInput
   likedPosts: PostUpdateManyInput
 }
 
 input UserUpdateWithWhereUniqueNestedInput {
   where: UserWhereUniqueInput!
   data: UserUpdateDataInput!
+}
+
+input UserUpdateWithWhereUniqueWithoutFollowersInput {
+  where: UserWhereUniqueInput!
+  data: UserUpdateWithoutFollowersDataInput!
 }
 
 input UserUpdateWithWhereUniqueWithoutFollowingInput {
@@ -1105,6 +1160,12 @@ input UserUpsertWithWhereUniqueNestedInput {
   where: UserWhereUniqueInput!
   update: UserUpdateDataInput!
   create: UserCreateInput!
+}
+
+input UserUpsertWithWhereUniqueWithoutFollowersInput {
+  where: UserWhereUniqueInput!
+  update: UserUpdateWithoutFollowersDataInput!
+  create: UserCreateWithoutFollowersInput!
 }
 
 input UserUpsertWithWhereUniqueWithoutFollowingInput {
@@ -1187,6 +1248,7 @@ input UserWhereInput {
   posts_some: PostWhereInput
   comments_some: CommentWhereInput
   following_some: UserWhereInput
+  followers_some: UserWhereInput
   likedPosts_some: PostWhereInput
   createdAt: DateTime
   createdAt_not: DateTime

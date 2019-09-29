@@ -12,6 +12,7 @@ type Mutation {
   login(data: LoginUserInput!): AuthPayload!
   createUser(data: CreateUserInput!): AuthPayload!
   updateUser(data: UpdateUserInput!): User!
+  followUser(id: ID!): User!
   deleteUser(id: ID!): User!
   createPost(data: CreatePostInput!): Post!
   updatePost(id: ID!, data: UpdatePostInput!): Post!
@@ -30,6 +31,7 @@ type User {
   password: String!
   posts: [Post!]!
   comments: [Comment!]!
+  followers: [User!]!
   following: [User!]!
   likedPosts: [Post!]!
   createdAt: String!
